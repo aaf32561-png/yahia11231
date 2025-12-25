@@ -1,0 +1,7 @@
+{
+  "name": "CodeMaster AI - Learn Programming Simply",
+  "description": "A comprehensive multilingual programming learning platform that simplifies coding concepts and suggests the best tools to use, powered by Gemini AI.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

@@ -1,0 +1,17 @@
+
+{
+  "short_name": "CodeMaster",
+  "name": "CodeMaster AI - Learn Coding",
+  "icons": [
+    {
+      "src": "public/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#4F46E5",
+  "background_color": "#F8FAFC"
+}
