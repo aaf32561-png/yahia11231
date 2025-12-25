@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { AppLanguage, ProgrammingLanguage } from './types';
 import { languages as initialLanguages } from './data/languages';
 import LanguageCard from './components/LanguageCard';
@@ -13,7 +12,9 @@ const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
-  const gemini = new GeminiService();
+  
+  // استخدام useMemo لضمان عدم تكرار إنشاء الخدمة مع كل Render
+  const gemini = useMemo(() => new GeminiService(), []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -33,7 +34,7 @@ const App: React.FC = () => {
       } else {
         const guideData = await gemini.getDynamicLanguageGuide(searchQuery, appLang);
         const dynamicLang: ProgrammingLanguage = {
-          id: searchQuery.toLowerCase(),
+          id: searchQuery.toLowerCase().replace(/\s+/g, '-'),
           name: searchQuery,
           icon: '✨',
           color: 'bg-indigo-500',
@@ -53,9 +54,11 @@ const App: React.FC = () => {
         };
         setSelectedLanguage(dynamicLang);
       }
-      document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById('details')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
     } catch (err) {
-      alert(appLang === 'ar' ? 'عذراً، لم نتمكن من العثور على هذه اللغة.' : 'Sorry, we couldn\'t find details for this language.');
+      alert(appLang === 'ar' ? 'عذراً، لم نتمكن من جلب بيانات هذه اللغة حالياً.' : 'Sorry, we couldn\'t fetch details for this language right now.');
     } finally {
       setSearching(false);
     }
@@ -71,7 +74,7 @@ const App: React.FC = () => {
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'glass shadow-md py-3' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="public/icon.svg" className="w-10 h-10 rounded-xl shadow-lg" alt="Logo" />
+            <img src="icon.svg" className="w-10 h-10 rounded-xl shadow-lg" alt="Logo" />
             <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
               CodeMaster AI
             </h1>
@@ -86,7 +89,7 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      {/* Hero with Search */}
+      {/* Hero Section */}
       <section className="pt-32 pb-12 px-4 bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-950">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
@@ -104,14 +107,14 @@ const App: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={appLang === 'ar' ? 'ابحث عن لغة (مثال: Java, Rust, SQL)...' : 'Search language (e.g. Java, Rust, SQL)...'}
-              className="w-full pl-6 pr-32 py-5 rounded-2xl border-2 border-transparent bg-white dark:bg-slate-800 shadow-2xl focus:border-indigo-500 outline-none dark:text-white group-hover:shadow-indigo-100 dark:group-hover:shadow-none transition-all"
+              className="w-full pl-6 pr-32 py-5 rounded-2xl border-2 border-transparent bg-white dark:bg-slate-800 shadow-2xl focus:border-indigo-500 outline-none dark:text-white group-hover:shadow-indigo-100 transition-all"
             />
             <button 
               type="submit"
               disabled={searching}
               className="absolute right-2 top-2 bottom-2 px-6 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg disabled:opacity-50"
             >
-              {searching ? (appLang === 'ar' ? 'جاري البحث...' : 'Searching...') : (appLang === 'ar' ? 'ابدأ' : 'Start')}
+              {searching ? (appLang === 'ar' ? 'بحث...' : 'Wait...') : (appLang === 'ar' ? 'ابدأ' : 'Start')}
             </button>
           </form>
         </div>

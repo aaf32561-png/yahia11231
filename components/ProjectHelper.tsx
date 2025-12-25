@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { AppLanguage, ProjectRoadmap } from '../types';
 import { GeminiService } from '../services/geminiService';
 
@@ -11,7 +10,8 @@ const ProjectHelper: React.FC<Props> = ({ appLang }) => {
   const [idea, setIdea] = useState('');
   const [roadmap, setRoadmap] = useState<ProjectRoadmap | null>(null);
   const [loading, setLoading] = useState(false);
-  const gemini = new GeminiService();
+  
+  const gemini = useMemo(() => new GeminiService(), []);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const ProjectHelper: React.FC<Props> = ({ appLang }) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.283a2 2 0 01-1.631 0l-.628-.283a6 6 0 00-3.86-.517l-2.387.477a2 2 0 00-1.022.547V18.318a2 2 0 00.586 1.414l2.586 2.586a2 2 0 001.414.586h10.828a2 2 0 001.414-.586l2.586-2.586a2 2 0 00.586-1.414v-2.89z" />
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 8a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
-        {appLang === 'ar' ? 'مساعد المشاريع البرمجية' : 'Project Roadmap Builder'}
+        {appLang === 'ar' ? 'مساعد المشاريع' : 'Project Builder'}
       </h3>
       
       <p className="text-sm text-slate-500 mb-6">
@@ -47,7 +47,7 @@ const ProjectHelper: React.FC<Props> = ({ appLang }) => {
         <textarea
           value={idea}
           onChange={(e) => setIdea(e.target.value)}
-          placeholder={appLang === 'ar' ? 'مثال: تطبيق لتنظيم الوقت أو موقع لعرض الوصفات' : 'Example: A todo app or a recipe website'}
+          placeholder={appLang === 'ar' ? 'مثال: تطبيق لتنظيم الوقت' : 'Example: A todo app'}
           className="w-full p-4 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-orange-500 outline-none h-24 text-sm"
         />
         <button
