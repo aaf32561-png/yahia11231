@@ -1,7 +1,7 @@
 {
   "short_name": "CodeMaster",
-  "name": "CodeMaster AI",
-  "description": "تعلم البرمجة ببساطة مع الذكاء الاصطناعي",
+  "name": "CodeMaster AI - تعلم البرمجة",
+  "description": "تطبيق تعليم البرمجة الشامل بالذكاء الاصطناعي",
   "icons": [
     {
       "src": "icon.svg",
@@ -10,11 +10,9 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "./index.html",
   "display": "standalone",
-  "display_override": ["window-controls-overlay"],
   "orientation": "portrait",
   "theme_color": "#4F46E5",
-  "background_color": "#F8FAFC",
-  "categories": ["education", "developer tools"]
+  "background_color": "#F8FAFC"
 }
